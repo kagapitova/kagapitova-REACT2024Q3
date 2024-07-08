@@ -8,14 +8,16 @@ interface SearchProps {
 interface SearchState {
   searchTerm: string;
   loading: boolean;
+  error: boolean;
 }
 
 class Search extends Component<SearchProps, SearchState> {
   constructor(props: SearchProps) {
     super(props);
     this.state = {
-      searchTerm: '',
+      searchTerm: 'lu',
       loading: true,
+      error: false,
     };
   }
 
@@ -25,17 +27,24 @@ class Search extends Component<SearchProps, SearchState> {
       this.setState({ searchTerm: savedSearchTerm });
       this.props
         .onSearch(savedSearchTerm)
-        .finally(() => this.setState({ loading: false }));
+        .finally(() => this.setState({ loading: false }))
+        .catch(() => this.setState({ error: true, loading: false }));
+    } else {
+      this.props
+        .onSearch(this.state.searchTerm)
+        .finally(() => this.setState({ loading: false }))
+        .catch(() => this.setState({ error: true, loading: false }));
     }
   }
 
   handleSearch = () => {
     const trimmedSearchTerm = this.state.searchTerm.trim();
-    this.setState({ loading: true });
+    this.setState({ loading: true, error: false });
     localStorage.setItem('searchTerm', trimmedSearchTerm);
     this.props
       .onSearch(trimmedSearchTerm)
-      .finally(() => this.setState({ loading: false }));
+      .finally(() => this.setState({ loading: false }))
+      .catch(() => this.setState({ error: true, loading: false }));
   };
 
   throwErrorAndLog = () => {
@@ -43,10 +52,27 @@ class Search extends Component<SearchProps, SearchState> {
       throw new Error('This is an example error message.');
     } catch (error) {
       console.error(error);
+      this.setState({ error: true });
     }
   };
 
+  resetError = () => {
+    this.setState({ error: false });
+  };
+
   render() {
+    if (this.state.error) {
+      return (
+        <div className={styles.errorContainer}>
+          <div className={styles.error}>
+            An error occurred. Please try again later.
+          </div>
+          <button onClick={this.resetError} className={styles.resetButton}>
+            Reset
+          </button>
+        </div>
+      );
+    }
     return (
       <div className={styles.container}>
         <input

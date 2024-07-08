@@ -1,0 +1,10 @@
+.errorBoundary {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+.errorBoundary a {
+    border: 2px solid white;
+    cursor: pointer;
+}

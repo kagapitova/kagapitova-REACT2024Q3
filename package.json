@@ -11,12 +11,15 @@
     "vite": "^5.3.3"
   },
   "devDependencies": {
+    "@types/css-modules": "^1.0.5",
     "@typescript-eslint/eslint-plugin": "^7.15.0",
     "@typescript-eslint/parser": "^7.15.0",
+    "css-loader": "^7.1.2",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.3",
     "eslint-plugin-react": "^7.34.3",
+    "eslint-plugin-react-compiler": "^0.0.0-experimental-0998c1e-20240625",
     "eslint-plugin-react-hooks": "^4.6.2",
     "husky": "^8.0.0",
     "lint-staged": "^15.2.7",
@@ -26,10 +29,11 @@
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
-    "lint": "eslint 'src/**/*.{ts,tsx}'",
+    "lint": "eslint \"src/**/*.{ts,tsx}\"",
     "format:fix": "prettier --write 'src/**/*.{ts,tsx,js,jsx}'",
     "prepare": "husky install",
-    "test": "echo \"No test specified\" && exit 0"
+    "test": "echo \"No test specified\" && exit 0",
+    "precommit": "lint-staged"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx}": [
