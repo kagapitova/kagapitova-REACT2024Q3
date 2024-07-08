@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Search from './Search';
 import Results from './Results';
 import { Result } from './Types';
+import ErrorBoundary from './ErrorBoundary';
 
 interface AppState {
   searchTerm: string;
@@ -38,10 +39,12 @@ class App extends Component<object, AppState> {
   render() {
     return (
       <div>
-        <h1>Star Wars Search</h1>
-        <h4>Here you can find a character by name.</h4>
-        <Search onSearch={this.handleSearch} />
-        <Results results={this.state.results} />
+        <ErrorBoundary>
+          <h1>Star Wars Search</h1>
+          <h4>Here you can find a character by name.</h4>
+          <Search onSearch={this.handleSearch} />
+          <Results results={this.state.results} />
+        </ErrorBoundary>
       </div>
     );
   }

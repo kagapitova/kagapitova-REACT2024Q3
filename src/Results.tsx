@@ -10,7 +10,7 @@ class Results extends Component<ResultsProps> {
   render() {
     const { results } = this.props;
     return (
-      <div>
+      <div className={styles.result_block}>
         {results.map((item, index) => (
           <div key={index} className={styles.item}>
             <h2>{item.name}</h2>
