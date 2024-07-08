@@ -3,6 +3,3 @@
 
 npm test
 npx lint-staged
-fix: lint Husky Error Boundary
-fix: lint Husky Error Boundary
-fix: lint Husky Error Boundary
