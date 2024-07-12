@@ -61,18 +61,6 @@ class Search extends Component<SearchProps, SearchState> {
   };
 
   render() {
-    if (this.state.error) {
-      return (
-        <div className={styles.errorContainer}>
-          <div className={styles.error}>
-            An error occurred. Please try again later.
-          </div>
-          <button onClick={this.resetError} className={styles.resetButton}>
-            Reset
-          </button>
-        </div>
-      );
-    }
     return (
       <div className={styles.container}>
         <input
@@ -83,7 +71,6 @@ class Search extends Component<SearchProps, SearchState> {
           onChange={e => this.setState({ searchTerm: e.target.value })}
         />
         <button onClick={this.handleSearch}>Search</button>
-        <button onClick={this.throwErrorAndLog}>Error</button>
         <div
           className={this.state.loading ? styles.showLoader : styles.loader}
         />
