@@ -2,6 +2,7 @@ import { render } from '@testing-library/react';
 import Results from './../src/Results';
 import '@testing-library/jest-dom';
 import { Result } from '../src/Types';
+import { BrowserRouter } from 'react-router-dom';
 
 test('Results component renders correctly with data', () => {
   const data: Result[] = [
@@ -9,7 +10,11 @@ test('Results component renders correctly with data', () => {
     { name: 'Darth Vader', description: 'Sith Lord' },
   ];
 
-  const { getByText } = render(<Results results={data} />);
+  const { getByText } = render(
+    <BrowserRouter>
+      <Results results={data} />
+    </BrowserRouter>,
+  );
 
   for (const item of data) {
     const nameElement = getByText(item.name);
@@ -20,7 +25,11 @@ test('Results component renders correctly with data', () => {
 });
 
 test('Results component renders correctly with empty data', () => {
-  const { queryByText } = render(<Results results={[]} />);
+  const { queryByText } = render(
+    <BrowserRouter>
+      <Results results={[]} />
+    </BrowserRouter>,
+  );
   expect(queryByText('Luke Skywalker')).toBeNull();
   expect(queryByText('Darth Vader')).toBeNull();
 });
