@@ -2,7 +2,7 @@ import React, { ChangeEvent, useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { Result } from './Types';
-import styles from './Result.module.css';
+import styles from './Results.module.css';
 import Details from './Details';
 
 interface ResultsProps {

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Search.module.css';
-
 interface SearchProps {
   onSearch: (searchTerm: string) => Promise<void>;
 }

@@ -1,24 +1,25 @@
-import { render } from '@testing-library/react';
-import Results from './../src/Results';
+import React from 'react';
+import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import Results from '../src/Results';
 import { Result } from '../src/Types';
 import { BrowserRouter } from 'react-router-dom';
 
 test('Results component renders correctly with data', () => {
-  const data: Result[] = [
-    { name: 'Luke Skywalker', description: 'Jedi Knight' },
-    { name: 'Darth Vader', description: 'Sith Lord' },
+  const results: Result[] = [
+    { name: 'Luke Skywalker', description: 'Jedi Knight', index: 22 },
+    { name: 'Darth Vader', description: 'Sith Lord', index: 8 },
   ];
 
-  const { getByText } = render(
+  render(
     <BrowserRouter>
-      <Results results={data} />
+      <Results results={results} />
     </BrowserRouter>,
   );
 
-  for (const item of data) {
-    const nameElement = getByText(item.name);
-    const descriptionElement = getByText(item.description);
+  for (const item of results) {
+    const nameElement = screen.getByText(item.name);
+    const descriptionElement = screen.getByText(item.description);
     expect(nameElement).toBeInTheDocument();
     expect(descriptionElement).toBeInTheDocument();
   }
