@@ -5,7 +5,7 @@ import { Result } from './Types';
 type DetailsSetIsOpen = (isOpen: boolean) => void;
 
 type DetailsProps = {
-  selectedItem: Result;
+  selectedItem?: Result;
   detailsSetIsOpen: DetailsSetIsOpen;
   detailsIsOpen: boolean;
 };
