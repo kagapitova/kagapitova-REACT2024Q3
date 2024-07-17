@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import Search from './Search';
 import Results from './Results';
 import { Result } from './Types';
@@ -21,7 +21,7 @@ const App: React.FC = () => {
     results: [],
   });
 
-  const handleSearch = (searchTerm: string) => {
+  const handleSearch = useCallback((searchTerm: string) => {
     const uri = searchTerm
       ? `https://swapi.dev/api/people/?search=${searchTerm}`
       : `https://swapi.dev/api/people/`;
@@ -30,7 +30,7 @@ const App: React.FC = () => {
       .then((data: ApiData) => {
         setAppState({ searchTerm, results: data.results });
       });
-  };
+  }, []);
 
   return (
     <Router>

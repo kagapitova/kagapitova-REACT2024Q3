@@ -14,8 +14,11 @@ const Results: React.FC<ResultsProps> = ({ results }) => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const currentPage = parseInt(queryParams.get('page') || '1', 10);
-  const [selectedItem, setSelectedItem] = useState(results[0]);
+  const [selectedItem, setSelectedItem] = useState<Result | undefined>(
+    undefined,
+  );
   const [detailsIsOpen, detailsSetIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -32,6 +35,22 @@ const Results: React.FC<ResultsProps> = ({ results }) => {
     navigate(`?${queryParams.toString()}`);
     const target = event.target as HTMLSelectElement;
     setItemsPerPage(Number(target.value));
+  };
+
+  const handleCardClick = async (item: Result) => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `https://swapi.dev/api/people/?search=${item.name}/`,
+      );
+      const data = await response.json();
+      setSelectedItem({ ...item, ...data });
+      detailsSetIsOpen(true);
+    } catch (error) {
+      console.error('Failed to load details:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -57,9 +76,10 @@ const Results: React.FC<ResultsProps> = ({ results }) => {
           <div key={index} className={styles.item} data-testid="result-item">
             <Link
               to={`?page=${currentPage}&details=${index}`}
-              onClick={() => {
-                setSelectedItem(item);
-                detailsSetIsOpen(true);
+              onClick={e => {
+                e.preventDefault();
+                console.log(item);
+                handleCardClick(item);
               }}
               className={styles.link}
             >
@@ -88,11 +108,11 @@ const Results: React.FC<ResultsProps> = ({ results }) => {
           </button>
         </div>
       </div>
+      {loading && <div className={styles.loader}>Loading...</div>}
       <Details
         selectedItem={selectedItem}
         detailsSetIsOpen={detailsSetIsOpen}
         detailsIsOpen={detailsIsOpen}
-        data-testid="details-view"
       />
     </div>
   );

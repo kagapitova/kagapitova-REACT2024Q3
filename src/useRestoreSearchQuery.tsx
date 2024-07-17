@@ -14,7 +14,7 @@ const useRestoreSearchQuery = (
     } else {
       setLoading(false);
     }
-  }, [onSearch, setLoading, setSearchTerm]);
+  }, [onSearch]);
 
   useEffect(() => {
     restoreSearchQuery();

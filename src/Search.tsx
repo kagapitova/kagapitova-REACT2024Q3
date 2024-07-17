@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styles from './Search.module.css';
 import useRestoreSearchQuery from './useRestoreSearchQuery';
+
 interface SearchProps {
   onSearch: (searchTerm: string) => Promise<void>;
 }
@@ -8,14 +9,6 @@ interface SearchProps {
 const Search: React.FC<SearchProps> = ({ onSearch }) => {
   const { searchTerm, setSearchTerm, loading, setLoading } =
     useRestoreSearchQuery(onSearch);
-
-  useEffect(() => {
-    const savedSearchTerm = localStorage.getItem('searchTerm');
-    if (savedSearchTerm) {
-      setSearchTerm(savedSearchTerm);
-      onSearch(savedSearchTerm).finally(() => setLoading(false));
-    }
-  }, []);
 
   const handleSearch = () => {
     const trimmedSearchTerm = searchTerm.trim();
@@ -33,8 +26,10 @@ const Search: React.FC<SearchProps> = ({ onSearch }) => {
         value={searchTerm}
         onChange={e => setSearchTerm(e.target.value)}
       />
-      <button onClick={handleSearch}>Search</button>
-      <div className={loading ? styles.showLoader : styles.loader} />
+      <button onClick={handleSearch} disabled={loading}>
+        Search
+      </button>
+      {loading && <div className={styles.loader}>Loading...</div>}
     </div>
   );
 };

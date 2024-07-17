@@ -2,8 +2,8 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { useNavigate, useLocation } from 'react-router-dom';
-import Details from './../src/Details';
-import { Result } from './../src/Types';
+import Details from '../src/Details';
+import { Result } from '../src/Types';
 
 vi.mock('react-router-dom', () => ({
   useNavigate: vi.fn(),
@@ -12,12 +12,19 @@ vi.mock('react-router-dom', () => ({
 
 describe('Details component', () => {
   const mockNavigate = vi.fn();
+  const mockDetailsSetIsOpen = vi.fn();
 
   beforeEach(() => {
-    (useNavigate as jest.Mock).mockReturnValue(mockNavigate);
-    (useLocation as jest.Mock).mockReturnValue({
+    vi.mocked(useNavigate).mockReturnValue(mockNavigate);
+    vi.mocked(useLocation).mockReturnValue({
+      pathname: '/details',
       search: '?details=1',
+      state: null,
+      hash: '',
+      key: 'mockKey',
     });
+    mockNavigate.mockClear();
+    mockDetailsSetIsOpen.mockClear();
   });
 
   const selectedItem: Result = {
@@ -51,8 +58,6 @@ describe('Details component', () => {
   });
 
   it('should call detailsSetIsOpen and navigate when Close Details button is clicked', () => {
-    const mockDetailsSetIsOpen = vi.fn();
-
     const { getByText } = render(
       <Details
         selectedItem={selectedItem}

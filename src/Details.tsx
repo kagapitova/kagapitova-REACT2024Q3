@@ -2,13 +2,11 @@ import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Result } from './Types';
 
-type DetailsSetIsOpen = (isOpen: boolean) => void;
-
-type DetailsProps = {
-  selectedItem?: Result;
-  detailsSetIsOpen: DetailsSetIsOpen;
+interface DetailsProps {
+  selectedItem: Result | undefined;
+  detailsSetIsOpen: (isOpen: boolean) => void;
   detailsIsOpen: boolean;
-};
+}
 
 const Details: React.FC<DetailsProps> = ({
   selectedItem,
@@ -23,9 +21,11 @@ const Details: React.FC<DetailsProps> = ({
     queryParams.delete('details');
     navigate(`?${queryParams.toString()}`);
   };
-  if (!detailsIsOpen || selectedItem === undefined) {
-    return;
+
+  if (!detailsIsOpen || !selectedItem) {
+    return null;
   }
+
   return (
     <div className="details" data-testid="details-view">
       <h2>Details of the selected item</h2>
@@ -35,9 +35,7 @@ const Details: React.FC<DetailsProps> = ({
       <p>Mass: {selectedItem.mass}</p>
       <p>Eye color: {selectedItem.eye_color}</p>
       <p>Gender: {selectedItem.gender}</p>
-      {selectedItem.index !== -1 && (
-        <button onClick={handleDeselect}>Close Details</button>
-      )}
+      <button onClick={handleDeselect}>Close Details</button>
     </div>
   );
 };
