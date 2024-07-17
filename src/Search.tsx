@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import styles from './Search.module.css';
+import useRestoreSearchQuery from './useRestoreSearchQuery';
 interface SearchProps {
   onSearch: (searchTerm: string) => Promise<void>;
 }
 
 const Search: React.FC<SearchProps> = ({ onSearch }) => {
-  const [searchTerm, setSearchTerm] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(true);
+  const { searchTerm, setSearchTerm, loading, setLoading } =
+    useRestoreSearchQuery(onSearch);
 
   useEffect(() => {
     const savedSearchTerm = localStorage.getItem('searchTerm');
