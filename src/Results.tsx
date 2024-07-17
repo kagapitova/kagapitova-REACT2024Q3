@@ -92,6 +92,7 @@ const Results: React.FC<ResultsProps> = ({ results }) => {
         selectedItem={selectedItem}
         detailsSetIsOpen={detailsSetIsOpen}
         detailsIsOpen={detailsIsOpen}
+        data-testid="details-view"
       />
     </div>
   );

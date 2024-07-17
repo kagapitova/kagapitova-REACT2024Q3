@@ -27,7 +27,7 @@ const Details: React.FC<DetailsProps> = ({
     return;
   }
   return (
-    <div className="details">
+    <div className="details" data-testid="details-view">
       <h2>Details of the selected item</h2>
       <p>Name: {selectedItem.name}</p>
       <p>Birth year: {selectedItem.birth_year}</p>
