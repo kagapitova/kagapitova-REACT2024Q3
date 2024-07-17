@@ -1,0 +1,39 @@
+.item {
+  border: 1px solid;
+  border-radius: 8px;
+  margin: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.link {
+  color: white;
+  z-index: 155;
+}
+
+.link:hover {
+  color: lightskyblue;
+}
+
+.detailsContent {
+  display: flex;
+  width: 1000px;
+  padding-top: 20px;
+}
+
+.cardContainer {
+  width: 100%;
+}
+
+.label {
+  display: block;
+  width: 130px;
+}
+
+.pagination {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}

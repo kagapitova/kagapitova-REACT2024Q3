@@ -1,32 +1,29 @@
-import { Component, ReactNode } from 'react';
-import styles from './ErrorBoundary.module.css';
+import React, { Component, ErrorInfo } from 'react';
 
-interface IState {
+interface ErrorBoundaryProps {
+  children: React.ReactNode;
+}
+
+interface ErrorBoundaryState {
   hasError: boolean;
 }
 
-interface IProps {
-  children: ReactNode;
-}
+class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  state: ErrorBoundaryState = { hasError: false };
 
-class ErrorBoundary extends Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props);
-    this.state = { hasError: false };
+  static getDerivedStateFromError() {
+    return { hasError: true };
   }
 
-  componentDidCatch(error: Error, info: React.ErrorInfo): void {
-    this.setState({ hasError: true });
-    localStorage.setItem('inputValue', '');
+  componentDidCatch(error: Error, info: ErrorInfo) {
     console.error('ErrorBoundary caught an error', error, info);
   }
-
   render() {
     if (this.state.hasError) {
       return (
-        <div className={styles.errorBoundary}>
-          <p>Something went wrong...</p>
-          <a href="/">Reset</a>
+        <div>
+          <h2>Something went wrong.</h2>
+          <h4>Refresh the page</h4>
         </div>
       );
     }

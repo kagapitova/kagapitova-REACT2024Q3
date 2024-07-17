@@ -1,5 +1,5 @@
+import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom';
 import App from '../src/App';
 
 test('App component renders correctly', () => {

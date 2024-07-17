@@ -1,95 +1,37 @@
-import { Component } from 'react';
+import React from 'react';
 import styles from './Search.module.css';
+import useRestoreSearchQuery from './useRestoreSearchQuery';
 
 interface SearchProps {
   onSearch: (searchTerm: string) => Promise<void>;
 }
 
-interface SearchState {
-  searchTerm: string;
-  loading: boolean;
-  error: boolean;
-}
+const Search: React.FC<SearchProps> = ({ onSearch }) => {
+  const { searchTerm, setSearchTerm, loading, setLoading } =
+    useRestoreSearchQuery(onSearch);
 
-class Search extends Component<SearchProps, SearchState> {
-  constructor(props: SearchProps) {
-    super(props);
-    this.state = {
-      searchTerm: 'lu',
-      loading: true,
-      error: false,
-    };
-  }
-
-  componentDidMount() {
-    const savedSearchTerm = localStorage.getItem('searchTerm');
-    if (savedSearchTerm) {
-      this.setState({ searchTerm: savedSearchTerm });
-      this.props
-        .onSearch(savedSearchTerm)
-        .finally(() => this.setState({ loading: false }))
-        .catch(() => this.setState({ error: true, loading: false }));
-    } else {
-      this.props
-        .onSearch(this.state.searchTerm)
-        .finally(() => this.setState({ loading: false }))
-        .catch(() => this.setState({ error: true, loading: false }));
-    }
-  }
-
-  handleSearch = () => {
-    const trimmedSearchTerm = this.state.searchTerm.trim();
-    this.setState({ loading: true, error: false });
+  const handleSearch = () => {
+    const trimmedSearchTerm = searchTerm.trim();
+    setLoading(true);
     localStorage.setItem('searchTerm', trimmedSearchTerm);
-    this.props
-      .onSearch(trimmedSearchTerm)
-      .finally(() => this.setState({ loading: false }))
-      .catch(() => this.setState({ error: true, loading: false }));
+    onSearch(trimmedSearchTerm).finally(() => setLoading(false));
   };
 
-  throwErrorAndLog = () => {
-    try {
-      throw new Error('This is an example error message.');
-    } catch (error) {
-      console.error(error);
-      this.setState({ error: true });
-    }
-  };
-
-  resetError = () => {
-    this.setState({ error: false });
-  };
-
-  render() {
-    if (this.state.error) {
-      return (
-        <div className={styles.errorContainer}>
-          <div className={styles.error}>
-            An error occurred. Please try again later.
-          </div>
-          <button onClick={this.resetError} className={styles.resetButton}>
-            Reset
-          </button>
-        </div>
-      );
-    }
-    return (
-      <div className={styles.container}>
-        <input
-          className={styles.input}
-          type="text"
-          placeholder="Search..."
-          value={this.state.searchTerm}
-          onChange={e => this.setState({ searchTerm: e.target.value })}
-        />
-        <button onClick={this.handleSearch}>Search</button>
-        <button onClick={this.throwErrorAndLog}>Error</button>
-        <div
-          className={this.state.loading ? styles.showLoader : styles.loader}
-        />
-      </div>
-    );
-  }
-}
+  return (
+    <div className={styles.container}>
+      <input
+        className={styles.input}
+        type="text"
+        placeholder="Search..."
+        value={searchTerm}
+        onChange={e => setSearchTerm(e.target.value)}
+      />
+      <button onClick={handleSearch} disabled={loading}>
+        Search
+      </button>
+      {loading && <div className={styles.loader}>Loading...</div>}
+    </div>
+  );
+};
 
 export default Search;
