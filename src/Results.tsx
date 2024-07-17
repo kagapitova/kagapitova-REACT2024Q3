@@ -54,7 +54,7 @@ const Results: React.FC<ResultsProps> = ({ results }) => {
         }}
       >
         {results.slice(startIndex, endIndex).map((item, index) => (
-          <div key={index} className={styles.item}>
+          <div key={index} className={styles.item} data-testid="result-item">
             <Link
               to={`?page=${currentPage}&details=${index}`}
               onClick={() => {

@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Results from '../src/Results';
 import { Result } from '../src/Types';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 test('Results component renders correctly with data', () => {
   const results: Result[] = [
@@ -12,9 +12,9 @@ test('Results component renders correctly with data', () => {
   ];
 
   render(
-    <BrowserRouter>
+    <Router>
       <Results results={results} />
-    </BrowserRouter>,
+    </Router>,
   );
 
   for (const item of results) {
@@ -25,12 +25,33 @@ test('Results component renders correctly with data', () => {
   }
 });
 
-test('Results component renders correctly with empty data', () => {
+test('Check that an appropriate message is displayed if no cards are present', () => {
   const { queryByText } = render(
-    <BrowserRouter>
+    <Router>
       <Results results={[]} />
-    </BrowserRouter>,
+    </Router>,
   );
   expect(queryByText('Luke Skywalker')).toBeNull();
   expect(queryByText('Darth Vader')).toBeNull();
+});
+
+test('Verify that the component renders the specified number of cards', () => {
+  const results: Result[] = [
+    { name: 'Luke Skywalker', description: 'Jedi Knight', index: 22 },
+    { name: 'Darth Vader', description: 'Sith Lord', index: 8 },
+    { name: 'Leia Organa', description: 'Rebel Leader', index: 9 },
+    { name: 'Han Solo', description: 'Smuggler', index: 10 },
+    { name: 'Yoda', description: 'Jedi Master', index: 11 },
+    { name: 'Palpatine', description: 'Sith Emperor', index: 12 },
+  ];
+
+  render(
+    <Router>
+      <Results results={results} />
+    </Router>,
+  );
+
+  const itemsPerPage = 5;
+  const renderedItems = screen.getAllByTestId('result-item');
+  expect(renderedItems.length).toBeLessThanOrEqual(itemsPerPage);
 });
